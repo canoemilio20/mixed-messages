@@ -1,3 +1,5 @@
+import readline from 'node:readline';
+
 const adjectives = [
     'Ashen',
     'Gilded',
@@ -63,7 +65,7 @@ const phrases = [
     'Marked by the Long Dark'
 ];
 
-const epithetGenerator = () => {
+const epithetGenerator = (name) => {
 
     const type = Math.floor(Math.random() * 4) + 1; // generate number from 1 to 4 to identify the type of epithet to generate
 
@@ -72,14 +74,14 @@ const epithetGenerator = () => {
         const adjective = Math.floor(Math.random() * adjectives.length); // pick the index of the adjective (from 0 to the max index, due to the generated number being floored)
         const metaphor = Math.floor(Math.random() * metaphoresAndAllusions.length); // pick the index of the metaphor (from 0 to the max index, due to the generated number being floored)
 
-        return `${adjectives[adjective]} ${metaphoresAndAllusions[metaphor]}`;
+        return `${name}, ${adjectives[adjective]} ${metaphoresAndAllusions[metaphor]}`;
 
     } else if(type == 2){ // type 2: mythic title epithet (adjective + phrase)
 
         const adjective = Math.floor(Math.random() * adjectives.length); // pick the index of the adjective (from 0 to the max index, due to the generated number being floored)
         const phrase = Math.floor(Math.random() * phrases.length); // pick the index of the phrase (from 0 to the max index, due to the generated number being floored)
 
-        return `${adjectives[adjective]}, ${phrases[phrase]}`;
+        return `${name} '${adjectives[adjective]}', ${phrases[phrase]}`;
 
     } else if(type == 3){ // type 3: grand epithet (adjective + metaphor, phrase)
 
@@ -87,16 +89,24 @@ const epithetGenerator = () => {
         const metaphor = Math.floor(Math.random() * metaphoresAndAllusions.length); // pick the index of the metaphor (from 0 to the max index, due to the generated number being floored)
         const phrase = Math.floor(Math.random() * phrases.length); // pick the index of the phrase (from 0 to the max index, due to the generated number being floored)
 
-        return `${adjectives[adjective]} ${metaphoresAndAllusions[metaphor]}, ${phrases[phrase]}`;
+        return `${name} ${adjectives[adjective]} ${metaphoresAndAllusions[metaphor]}, ${phrases[phrase]}`;
 
     } else if(type == 4){ // type 4: short and ominous epithet (adjective)
 
         const adjective = Math.floor(Math.random() * adjectives.length); // pick the index of the adjective (from 0 to the max index, due to the generated number being floored)
 
-        return `${adjectives[adjective]}`;
+        return `${name}, ${adjectives[adjective]}`;
 
     }
 
 }
 
-console.log(epithetGenerator());
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+rl.question('\nEnter the name for which to generate an epithet: ', name => {
+  console.log(`${epithetGenerator(name)}\n`);
+  rl.close();
+});
